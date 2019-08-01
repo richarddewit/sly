@@ -1,0 +1,52 @@
+#!/usr/bin/env bash
+
+slyfile='Slyfile'
+
+# Colors
+red=31
+green=32
+yellow=33
+cyan=36
+bold=$(tput smul)
+reset=$(tput sgr0)
+
+sly_prepend() {
+  color="${2-$yellow}"
+  prefix="$(printf "\e[%sm%s\e[m" "$color" "$(printf "%-3s | " "${1-SLY}")")"
+  while IFS= read line; do
+    echo -e "${prefix}${line}"
+  done
+}
+
+sly_error() {
+  \printf '\a%s\n' "$1" | sly_prepend "SLY ERROR" $red >&2
+}
+
+sly() {
+  if [ -f "./$slyfile" ]; then
+    has_short_fn="$(grep -E "^${1}\s*\(\)" "./$slyfile")"
+    has_long_fn="$(grep -E "^function\s+${1}" "./$slyfile")"
+    if [ -z "$has_short_fn" ] && [ -z "$has_long_fn" ]; then
+      sly_error "$slyfile has no function called ${bold}${1}${reset}"
+      exit 1
+    fi
+
+    source "./$slyfile"
+  else
+    sly_error "Cannot load $slyfile"
+  fi
+
+  if [ -z "$(command -v $1)" ]; then
+    sly_error "$slyfile has no function called ${bold}${1}${reset}"
+    exit 1
+  fi
+
+  echo "Executing function: ${bold}${1}${reset}" | sly_prepend
+  declare -f  $1 | sly_prepend
+
+  # $@ 2>&1 | sly_prepend "SLY"
+  $@
+}
+
+(sly $@)
+
