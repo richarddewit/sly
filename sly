@@ -38,6 +38,7 @@ sly() {
     source "$slyfile"
   else
     sly_error "$slyfile not found"
+    sly_error "Create one with ${bold}sly --init${reset}"
     exit 1
   fi
 
@@ -53,7 +54,37 @@ sly() {
   $@
 }
 
+sly_init() {
+  if sly_has_slyfile; then
+    sly_error "$slyfile already exists"
+    exit 1
+  fi
+
+  cat << SLY > $slyfile
+# -*- mode: sh; -*- vim: set ft=sh:
+#
+### $slyfile - used by sly
+### https://github.com/richarddewit/sly
+#
+# Add your functions below. They may contain any Bash code.
+# Example:
+#
+#   ping_home() {
+#     ping -c \${1-5} 127.0.0.1
+#     screenfetch
+#   }
+#
+# Then run it with \`sly ping_home 10\` to do 10 pings to localhost and
+# run \`screenfetch\` afterwards.
+
+
+SLY
+  echo "Sly initialised into $(pwd)/$slyfile" | sly_prepend
+  echo "Go add some functions to the $slyfile!" | sly_prepend
+  exit 0
+}
 
 [ -z "$1" ] && sly_error "Missing argument COMMAND" && exit 1
+[ "$1" == "--init" ] && sly_init
 
 (sly $@)
