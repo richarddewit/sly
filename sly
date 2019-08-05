@@ -85,6 +85,17 @@ SLY
 }
 
 [ -z "$1" ] && sly_error "Missing argument COMMAND" && exit 1
+if [ "$1" == "--help" ]; then
+  echo "Sly - a CLI tool utilizing plain Bash functions" | sly_prepend
+  echo "~~~" | sly_prepend
+  echo "" | sly_prepend
+  echo "Usage: sly COMMAND [ARGUMENTS]" | sly_prepend
+  echo "Options:" | sly_prepend
+  echo "    --help     Show this message" | sly_prepend
+  echo "    --init     Initialize an empty ${slyfile}" | sly_prepend
+  exit 0
+fi
+
 [ "$1" == "--init" ] && sly_init
 
 (sly $@)
