@@ -1,3 +1,5 @@
+![Fox](./Fox.png)
+
 # Sly
 A CLI tool utilizing plain Bash functions.
 
