@@ -1,6 +1,12 @@
 # Sly
 A CLI tool utilizing plain Bash functions.
 
+## Install
+
+```bash
+curl -Lo- git.io/sly-install | bash
+```
+
 ## Slyfile
 
 Create a `Slyfile` somewhere you need it:
