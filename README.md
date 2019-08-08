@@ -3,6 +3,8 @@
 # Sly
 A CLI tool utilizing plain Bash functions.
 
+> ⚠ **Important!** Sly is only tested on Linux
+
 ## Install
 
 ```bash
