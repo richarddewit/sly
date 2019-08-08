@@ -94,6 +94,22 @@ SLY
 
 [ -z "$1" ] && sly_error "Missing argument COMMAND" && exit 1
 if [ "$1" == "--help" ]; then
+  cat << SLY | sly_prepend
+   ::     .
+   mMs/:-oy:
+   dMMMMMMh.
+  :MMMMMMMy\`
+  hMMMMMMN//+///--::-:.---..
+  dMMMMMMMMMMMMMMMMMMmmMMMMNmdys+/:-..-+
+  dMMMMMMMM $(sly_print_color "$yellow" "SLY") MMMMMMMNNMMMMMMMMMMMNNm/
+  -dMMMMMMMMMMMMMMMMMMMh.+sydmMMMMNmh/.
+   \`/hMMmMMMMmmmMMMNMMMN-   \`..--..\`
+     oMh\`+MM+\`\`\`ohNdohNMNy/\`
+    \`md\`  mN     \`Nd\` \`.-hM/
+   :yN.   Nm   .+hN.     \`mm\`
+  .oo:  /mm/   \`::/      /s+
+
+SLY
   echo "Sly - a CLI tool utilizing plain Bash functions" | sly_prepend
   echo "~~~" | sly_prepend
   echo "" | sly_prepend
