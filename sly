@@ -105,6 +105,7 @@ SLY
 }
 
 [ -z "$1" ] && sly_error "Missing argument COMMAND" && exit 1
+[ "${1:0:4}" == "sly_" ] && sly_error "The sly_ prefix is reserved for sly functions" && exit 1
 if [ "$1" == "--help" ]; then
   cat << SLY | sly_prepend
    ::     .
