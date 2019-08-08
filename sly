@@ -36,6 +36,18 @@ sly_no_slyfile() {
   exit 1
 }
 
+sly_list() {
+  if sly_has_slyfile; then
+    source "$slyfile"
+    echo "Available commands:" | sly_prepend
+    echo "" | sly_prepend
+    declare -F | awk '{print $NF}' | sort | egrep -v "^sly_" | sly_prepend
+    exit 0
+  else
+    sly_no_slyfile
+  fi
+}
+
 sly() {
   if sly_has_slyfile; then
     has_short_fn="$(grep -E "^${1}\s*\(\)" "$slyfile")"
@@ -121,5 +133,6 @@ SLY
 fi
 
 [ "$1" == "--init" ] && sly_init
+[ "$1" == "--list" ] && sly_list
 
 (sly $@)
