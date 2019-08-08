@@ -130,6 +130,7 @@ SLY
   echo "Options:" | sly_prepend
   echo "    --help     Show this message" | sly_prepend
   echo "    --init     Initialize an empty ${slyfile}" | sly_prepend
+  echo "    --list     List available commands" | sly_prepend
   exit 0
 fi
 
