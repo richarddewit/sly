@@ -10,9 +10,13 @@ cyan=36
 bold=$(tput smul)
 reset=$(tput sgr0)
 
+sly_print_color() {
+  printf "\e[%sm%s\e[m" "$1" "$2"
+}
+
 sly_prepend() {
   color="${2-$yellow}"
-  prefix="$(printf "\e[%sm%s\e[m" "$color" "$(printf "%-3s | " "${1-SLY}")")"
+  prefix="$(sly_print_color "$color" "$(printf "%-3s | " "${1-SLY}")")"
   while IFS= read line; do
     echo -e "${prefix}${line}"
   done
@@ -26,6 +30,12 @@ sly_has_slyfile() {
   [ -f "$slyfile" ]
 }
 
+sly_no_slyfile() {
+  sly_error "$slyfile not found"
+  sly_error "Create one with ${bold}sly --init${reset}"
+  exit 1
+}
+
 sly() {
   if sly_has_slyfile; then
     has_short_fn="$(grep -E "^${1}\s*\(\)" "$slyfile")"
@@ -37,9 +47,7 @@ sly() {
 
     source "$slyfile"
   else
-    sly_error "$slyfile not found"
-    sly_error "Create one with ${bold}sly --init${reset}"
-    exit 1
+    sly_no_slyfile
   fi
 
   if [ -z "$(command -v $1)" ]; then
