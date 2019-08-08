@@ -76,6 +76,34 @@ sly_exec() {
   $@
 }
 
+sly_help() {
+  cat << SLY | sly_prepend
+   ::     .
+   mMs/:-oy:
+   dMMMMMMh.
+  :MMMMMMMy\`
+  hMMMMMMN//+///--::-:.---..
+  dMMMMMMMMMMMMMMMMMMmmMMMMNmdys+/:-..-+
+  dMMMMMMMM $(sly_print_color "$yellow" "SLY") MMMMMMMNNMMMMMMMMMMMNNm/
+  -dMMMMMMMMMMMMMMMMMMMh.+sydmMMMMNmh/.
+   \`/hMMmMMMMmmmMMMNMMMN-   \`..--..\`
+     oMh\`+MM+\`\`\`ohNdohNMNy/\`
+    \`md\`  mN     \`Nd\` \`.-hM/
+   :yN.   Nm   .+hN.     \`mm\`
+  .oo:  /mm/   \`::/      /s+
+
+SLY
+  echo "Sly - a CLI tool utilizing plain Bash functions" | sly_prepend
+  echo "~~~" | sly_prepend
+  echo "" | sly_prepend
+  echo "Usage: sly COMMAND [ARGUMENTS]" | sly_prepend
+  echo "Options:" | sly_prepend
+  echo "    --help     Show this message" | sly_prepend
+  echo "    --init     Initialize an empty ${slyfile}" | sly_prepend
+  echo "    --list     List available commands" | sly_prepend
+  exit 0
+}
+
 sly_init() {
   if sly_has_slyfile; then
     sly_error "$slyfile already exists"
@@ -117,34 +145,7 @@ sly_list() {
 # Execution
 [ -z "$1" ] && sly_error "Missing argument COMMAND" && exit 1
 [ "${1:0:4}" == "sly_" ] && sly_error "The sly_ prefix is reserved for sly functions" && exit 1
-if [ "$1" == "--help" ]; then
-  cat << SLY | sly_prepend
-   ::     .
-   mMs/:-oy:
-   dMMMMMMh.
-  :MMMMMMMy\`
-  hMMMMMMN//+///--::-:.---..
-  dMMMMMMMMMMMMMMMMMMmmMMMMNmdys+/:-..-+
-  dMMMMMMMM $(sly_print_color "$yellow" "SLY") MMMMMMMNNMMMMMMMMMMMNNm/
-  -dMMMMMMMMMMMMMMMMMMMh.+sydmMMMMNmh/.
-   \`/hMMmMMMMmmmMMMNMMMN-   \`..--..\`
-     oMh\`+MM+\`\`\`ohNdohNMNy/\`
-    \`md\`  mN     \`Nd\` \`.-hM/
-   :yN.   Nm   .+hN.     \`mm\`
-  .oo:  /mm/   \`::/      /s+
-
-SLY
-  echo "Sly - a CLI tool utilizing plain Bash functions" | sly_prepend
-  echo "~~~" | sly_prepend
-  echo "" | sly_prepend
-  echo "Usage: sly COMMAND [ARGUMENTS]" | sly_prepend
-  echo "Options:" | sly_prepend
-  echo "    --help     Show this message" | sly_prepend
-  echo "    --init     Initialize an empty ${slyfile}" | sly_prepend
-  echo "    --list     List available commands" | sly_prepend
-  exit 0
-fi
-
+[ "$1" == "--help" ] && sly_help
 [ "$1" == "--init" ] && sly_init
 [ "$1" == "--list" ] && sly_list
 
