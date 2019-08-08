@@ -21,6 +21,8 @@ Add functions to the `Slyfile`. They may contain any Bash code.
 
 ### Example
 
+> Note: either the shorthand (`foo() {}`) or the long notation (`function foo {}`) can be used to define functions
+
 ```bash
 ping_home() {
   ping -c ${1-5} 127.0.0.1
