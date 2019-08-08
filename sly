@@ -48,7 +48,7 @@ sly_list() {
   fi
 }
 
-sly() {
+sly_exec() {
   if sly_has_slyfile; then
     has_short_fn="$(grep -E "^${1}\s*\(\)" "$slyfile")"
     has_long_fn="$(grep -E "^function\s+${1}" "$slyfile")"
@@ -136,4 +136,4 @@ fi
 [ "$1" == "--init" ] && sly_init
 [ "$1" == "--list" ] && sly_list
 
-(sly $@)
+(sly_exec $@)
