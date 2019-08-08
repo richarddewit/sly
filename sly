@@ -36,16 +36,20 @@ sly_no_slyfile() {
   exit 1
 }
 
-sly_list() {
+sly_available_functions() {
   if sly_has_slyfile; then
     source "$slyfile"
-    echo "Available commands:" | sly_prepend
-    echo "" | sly_prepend
-    declare -F | awk '{print $NF}' | sort | egrep -v "^sly_" | sly_prepend
-    exit 0
+    declare -F | awk '{print $NF}' | sort | egrep -v "^sly_"
   else
     sly_no_slyfile
   fi
+}
+
+sly_list() {
+  echo "Available commands:" | sly_prepend
+  echo "" | sly_prepend
+  sly_available_functions | sly_prepend
+  exit 0
 }
 
 sly_exec() {
