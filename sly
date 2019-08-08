@@ -98,9 +98,9 @@ SLY
   echo "" | sly_prepend
   echo "Usage: sly COMMAND [ARGUMENTS]" | sly_prepend
   echo "Options:" | sly_prepend
-  echo "    --help     Show this message" | sly_prepend
-  echo "    --init     Initialize an empty ${slyfile}" | sly_prepend
-  echo "    --list     List available commands" | sly_prepend
+  echo "    -h --help     Show this message" | sly_prepend
+  echo "    -i --init     Initialize an empty ${slyfile}" | sly_prepend
+  echo "    -l --list     List available commands" | sly_prepend
   exit 0
 }
 
@@ -145,8 +145,8 @@ sly_list() {
 # Execution
 [ -z "$1" ] && sly_error "Missing argument COMMAND" && exit 1
 [ "${1:0:4}" == "sly_" ] && sly_error "The sly_ prefix is reserved for sly functions" && exit 1
-[ "$1" == "--help" ] && sly_help
-[ "$1" == "--init" ] && sly_init
-[ "$1" == "--list" ] && sly_list
+[[ "$1" =~ ^(-h|--help)$ ]] && sly_help
+[[ "$1" =~ ^(-i|--init)$ ]] && sly_init
+[[ "$1" =~ ^(-l|--list)$ ]] && sly_list
 
 (sly_exec $@)
