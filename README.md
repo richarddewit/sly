@@ -49,7 +49,8 @@ This is a sample of functions used for a **Django** project running on **Docker*
 
 # Variables/aliases
 dc="docker-compose"
-manage="$dc exec app python manage.py"
+app_container="app"
+manage="$dc exec $app_container python manage.py"
 
 start() {
   # Start containers and watch logs
@@ -70,13 +71,14 @@ restart() {
 
 logs() {
   # Watch logs
-  # `sly logs` to log all containers, `sly logs app` to only log the `app` container
+  # Run `sly logs` to log all containers, `sly logs app` to only log
+  # the `app` container
   $dc logs -f "$1"
 }
 
 python() {
   # Run `python` shell inside `app` container
-  $dc exec app python
+  $dc exec $app_container python
 }
 
 manage() {
