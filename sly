@@ -111,6 +111,7 @@ sly_init() {
   fi
 
   cat << SLY > $slyfile
+#!/usr/bin/env bash
 # -*- mode: sh; -*- vim: set ft=sh:
 #
 ### $slyfile - used by sly
