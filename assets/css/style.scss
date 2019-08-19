@@ -1,0 +1,14 @@
+@import "{{ site.theme }}";
+
+a {
+  color: #e86703;
+}
+
+blockquote {
+  border-left: 3px solid #e86703;
+}
+
+#header nav li a {
+  border: 1px solid #c65b08;
+  background-color: #e86703;
+}
