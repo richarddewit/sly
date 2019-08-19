@@ -1,22 +1,24 @@
-![Fox](./Fox.png)
+<p align="center">
+  <img width="575" height="auto" src="./Fox.png" alt="Fox">
+</p>
 
 # Sly
 A CLI tool utilizing plain Bash functions.
 
-> ⚠️ **Important!** Sly is only tested on Linux
+> ⚠️ **Important!** Sly is only tested on Linux, with `bash` and `zsh`
 
 ## Install
 
 ```bash
-curl -Lo- git.io/sly-install | bash
+$ curl -Lo- git.io/sly-install | bash
 ```
 
 ## Slyfile
 
-Create a `Slyfile` somewhere you need it:
+Create a `Slyfile` in the current directory:
 
 ```bash
-sly --init
+$ sly --init
 ```
 
 Add functions to the `Slyfile`. They may contain any Bash code.
@@ -39,6 +41,9 @@ Then run it with `sly ping_home 10` to do 10 pings to localhost and run `screenf
 This is a sample of functions used for a **Django** project running on **Docker**:
 
 ```bash
+#!/usr/bin/env bash
+# -*- mode: sh; -*- vim: set ft=sh:
+#
 ### Slyfile - used by sly
 ### https://github.com/richarddewit/sly
 
@@ -57,10 +62,16 @@ stop() {
   $dc down
 }
 
+restart() {
+  # Combine functions
+  stop
+  start
+}
+
 logs() {
   # Watch logs
   # `sly logs` to log all containers, `sly logs app` to only log the `app` container
-  $dc logs -f $1
+  $dc logs -f "$1"
 }
 
 python() {
@@ -70,7 +81,14 @@ python() {
 
 manage() {
   # Run `manage.py` commands in `app` container
-  $manage $@
+  # Use `$@` to pass along all arguments
+  $manage "$@"
+}
+
+m() {
+  # Define custom shortcut functions
+  # Now you can run `sly m makemigrations`
+  manage "$@"
 }
 
 test() {
