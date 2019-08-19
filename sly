@@ -5,9 +5,7 @@ slyfile='Slyfile'
 
 ## Colors
 red=31
-green=32
 yellow=33
-cyan=36
 bold=$(tput smul)
 reset=$(tput sgr0)
 
@@ -20,13 +18,13 @@ sly_print_color() {
 sly_prepend() {
   color="${2-$yellow}"
   prefix="$(sly_print_color "$color" "$(printf "%-3s | " "${1-SLY}")")"
-  while IFS= read line; do
+  while IFS= read -r line; do
     echo -e "${prefix}${line}"
   done
 }
 
 sly_error() {
-  \printf '\a%s\n' "$1" | sly_prepend "SLY ERROR" $red >&2
+  printf '\a%s\n' "$1" | sly_prepend "SLY ERROR" $red >&2
 }
 
 sly_has_slyfile() {
@@ -41,8 +39,9 @@ sly_no_slyfile() {
 
 sly_available_functions() {
   if sly_has_slyfile; then
+    # shellcheck source=/dev/null
     source "$slyfile"
-    declare -F | awk '{print $NF}' | sort | egrep -v "^sly_"
+    declare -F | awk '{print $NF}' | sort | grep -Ev "^sly_"
   else
     sly_no_slyfile
   fi
@@ -59,21 +58,22 @@ sly_exec() {
       exit 1
     fi
 
+    # shellcheck source=/dev/null
     source "$slyfile"
   else
     sly_no_slyfile
   fi
 
-  if [ -z "$(command -v $1)" ]; then
+  if [ -z "$(command -v "$1")" ]; then
     sly_error "$slyfile has no function called ${bold}${1}${reset}"
     exit 1
   fi
 
   echo "Executing function: ${bold}${1}${reset}" | sly_prepend
-  declare -f  $1 | sly_prepend
+  declare -f "$1" | sly_prepend
 
   # $@ 2>&1 | sly_prepend "SLY"
-  $@
+  "$@"
 }
 
 sly_help() {
@@ -149,4 +149,4 @@ sly_list() {
 [[ "$1" =~ ^(-i|--init)$ ]] && sly_init
 [[ "$1" =~ ^(-l|--list)$ ]] && sly_list
 
-(sly_exec $@)
+(sly_exec "$@")
