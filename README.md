@@ -23,39 +23,47 @@ $ sly --init
 
 Add functions to the `Slyfile`. They may contain any Bash code.
 
-### Example
+### Simple example
 
 > Note: either the shorthand (`foo() {}`) or the long notation (`function foo {}`) can be used to define functions
 
 ```bash
-ping_home() {
-  ping -c ${1-5} 127.0.0.1
-  screenfetch
+example() {
+  width=${1-12}
+  length=${2-5}
+  area=$((width * length))
+  echo "Area is: $area (${width} x ${length})"
+  [ "$width" == "$length" ] && echo "It's a square"
+  echo "And the current directory is: $(pwd)"
+  echo "Calling 'uname -a':"
+  uname -a
 }
 ```
 
-Then run it with `sly ping_home 10` to do 10 pings to localhost and run `screenfetch` afterwards. Or run without arguments (`sly ping_home`) to do the default 5 pings instead of 10.
+To run this example, try these commands for different output:
+- `sly example`
+- `sly example 2 5`
+- `sly example 3 3`
 
-### A more real-world example
+> Remember, it's just plain bash. No magic.
 
-This is a sample of functions used for a **Django** project running on **Docker**:
+### A real-world example
+
+This is a set of functions used for a **Django** project running on **Docker**:
 
 ```bash
 #!/usr/bin/env bash
-# -*- mode: sh; -*- vim: set ft=sh:
 #
 ### Slyfile - used by sly
 ### https://github.com/richarddewit/sly
 
 # Variables/aliases
 dc="docker-compose"
-app_container="app"
-manage="$dc exec $app_container python manage.py"
+manage="$dc exec app python manage.py"
 
 start() {
-  # Start containers and watch logs
-  $dc up -d
-  $dc logs -f
+  # Start containers
+  $dc up -d --build
 }
 
 stop() {
@@ -73,28 +81,45 @@ logs() {
   # Watch logs
   # Run `sly logs` to log all containers, `sly logs app` to only log
   # the `app` container
-  $dc logs -f "$1"
+  if [ -n "$1" ]; then
+    $dc logs -f "$1"
+  else
+    $dc logs -f
+  fi
 }
 
 python() {
-  # Run `python` shell inside `app` container
-  $dc exec $app_container python
+  # Run interactive shell inside `app` container
+  $manage shell
 }
 
 manage() {
   # Run `manage.py` commands in `app` container
-  # Use `$@` to pass along all arguments
+  # Use `$@` to pass along all arguments of the function
   $manage "$@"
 }
 
 m() {
   # Define custom shortcut functions
   # Now you can run `sly m makemigrations`
-  manage "$@"
+  $manage "$@"
 }
 
 test() {
   # Run tests in `app` container
   $manage test
 }
+
+psql() {
+  # Run postgres shell in `db` container
+  $dc exec db psql -U postgres
+}
+
+sync() {
+  # Synchronise the lock- and requirements file
+  # with the installed packages
+  pipenv lock
+  pipenv lock --requirements > requirements.txt
+}
+
 ```

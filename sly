@@ -112,23 +112,27 @@ sly_init() {
 
   cat << SLY > $slyfile
 #!/usr/bin/env bash
-# -*- mode: sh; -*- vim: set ft=sh:
 #
 ### $slyfile - used by sly
 ### https://github.com/richarddewit/sly
 #
-# Add your functions below. They may contain any Bash code.
-# Example:
-#
-#   ping_home() {
-#     ping -c \${1-5} 127.0.0.1
-#     screenfetch
-#   }
-#
-# Then run it with \`sly ping_home 10\` to do 10 pings to localhost and
-# run \`screenfetch\` afterwards.
+# Compose your functions here. They may contain any Bash code.
 
-
+example() {
+  # To run this example, try these commands for different output:
+  #   \`sly example\`
+  #   \`sly example 2 5\`
+  #   \`sly example 3 3\`
+  width=\${1-12}
+  length=\${2-5}
+  area=\$((width * length))
+  echo "Area is: \$area (\${width} x \${length})"
+  [ "\$width" == "\$length" ] && echo "It's a square"
+  echo "And the current directory is: \$(pwd)"
+  echo "Calling 'uname -a':"
+  uname -a
+  # Remember, it's just plain bash. No magic.
+}
 SLY
   echo "Sly initialised into $(pwd)/$slyfile" | sly_prepend
   echo "Go add some functions to the $slyfile!" | sly_prepend
