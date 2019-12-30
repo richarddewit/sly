@@ -19,7 +19,7 @@ sly_prepend() {
   color="${2-$yellow}"
   prefix="$(sly_print_color "$color" "$(printf "%-3s | " "${1-SLY}")")"
   while IFS= read -r line; do
-    echo -e "${prefix}${line}"
+    >&2 echo -e "${prefix}${line}"
   done
 }
 
