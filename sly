@@ -148,10 +148,11 @@ sly_list() {
 
 
 # Execution
-[ -z "$1" ] && sly_error "Missing argument COMMAND" && exit 1
-[[ "$1" =~ ^sly_ ]] && sly_error "The sly_ prefix is reserved for sly internal functions" && exit 1
-[[ "$1" =~ ^(-h|--help)$ ]] && sly_help
-[[ "$1" =~ ^(-i|--init)$ ]] && sly_init
-[[ "$1" =~ ^(-l|--list)$ ]] && sly_list
+cmd="$1"
+[ -z "$cmd" ] && sly_error "Missing argument COMMAND" && cmd="--help"
+[[ "$cmd" =~ ^sly_ ]] && sly_error "The sly_ prefix is reserved for sly internal functions" && exit 1
+[[ "$cmd" =~ ^(-h|--help)$ ]] && sly_help
+[[ "$cmd" =~ ^(-i|--init)$ ]] && sly_init
+[[ "$cmd" =~ ^(-l|--list)$ ]] && sly_list
 
 (sly_exec "$@")
