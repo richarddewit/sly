@@ -1,0 +1,17 @@
+# System
+*~
+._*
+*.DS_Store
+.smbdelete*
+
+# IDE/Editor
+.idea/
+.vscode/
+
+*.swp
+\#*\#
+.projectile
+.ropeproject/
+
+# Project
+Slyfile
