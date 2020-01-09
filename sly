@@ -70,7 +70,9 @@ sly_exec() {
   fi
 
   echo "Executing function: ${bold}${1}${reset}" | sly_prepend
-  declare -f "$1" | sly_prepend
+  if [ "$verbose" = true ]; then
+    declare -f "$1" | sly_prepend
+  fi
 
   # $@ 2>&1 | sly_prepend "SLY"
   "$@"
@@ -101,6 +103,7 @@ SLY
   echo "    -h --help     Show this message" | sly_prepend
   echo "    -i --init     Initialize an empty ${slyfile}" | sly_prepend
   echo "    -l --list     List available commands" | sly_prepend
+  echo "    -v --verbose  Also print the code of the executing command" | sly_prepend
   exit 0
 }
 
@@ -148,6 +151,8 @@ sly_list() {
 
 
 # Execution
+[[ "$1" =~ ^(-v|--verbose)$ ]] && verbose=true && shift
+
 cmd="$1"
 [ -z "$cmd" ] && sly_error "Missing argument COMMAND" && cmd="--help"
 [[ "$cmd" =~ ^sly_ ]] && sly_error "The sly_ prefix is reserved for sly internal functions" && exit 1
