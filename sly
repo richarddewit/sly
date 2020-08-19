@@ -149,6 +149,14 @@ sly_list() {
   exit 0
 }
 
+sly_autocompletion() {
+  echo "--help"
+  echo "--init"
+  echo "--list"
+  sly_has_slyfile && sly_available_functions
+  exit 0
+}
+
 
 # Execution
 [[ "$1" =~ ^(-v|--verbose)$ ]] && verbose=true && shift
@@ -159,5 +167,6 @@ cmd="$1"
 [[ "$cmd" =~ ^(-h|--help)$ ]] && sly_help
 [[ "$cmd" =~ ^(-i|--init)$ ]] && sly_init
 [[ "$cmd" =~ ^(-l|--list)$ ]] && sly_list
+[[ "$cmd" =~ ^(-a|--auto)$ ]] && sly_autocompletion
 
 (sly_exec "$@")
