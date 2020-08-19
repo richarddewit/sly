@@ -94,16 +94,16 @@ sly_help() {
    :yN.   Nm   .+hN.     \`mm\`
   .oo:  /mm/   \`::/      /s+
 
+Sly - a CLI tool utilizing plain Bash functions
+~~~
+
+Usage: sly COMMAND [ARGUMENTS]
+Options:
+    -h --help     Show this message
+    -i --init     Initialize an empty ${slyfile}
+    -l --list     List available commands
+    -v --verbose  Also print the code of the executing command
 SLY
-  echo "Sly - a CLI tool utilizing plain Bash functions" | sly_prepend
-  echo "~~~" | sly_prepend
-  echo "" | sly_prepend
-  echo "Usage: sly COMMAND [ARGUMENTS]" | sly_prepend
-  echo "Options:" | sly_prepend
-  echo "    -h --help     Show this message" | sly_prepend
-  echo "    -i --init     Initialize an empty ${slyfile}" | sly_prepend
-  echo "    -l --list     List available commands" | sly_prepend
-  echo "    -v --verbose  Also print the code of the executing command" | sly_prepend
   exit 0
 }
 
