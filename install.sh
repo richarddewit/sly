@@ -11,6 +11,7 @@ echo
 ac_loc="/etc/bash_completion.d/sly-completion.bash"
 ac=y
 read -r -n 1 -p "Do you want autocompletion? [Yn]" ac
+
 if [[ $ac =~ ^(y|Y|)$ ]]; then
   curl_cmd="sudo curl -sL https://raw.githubusercontent.com/richarddewit/sly/master/sly-completion.bash -o $ac_loc"
   echo "$curl_cmd"
