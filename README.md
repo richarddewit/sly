@@ -21,7 +21,7 @@ Create a `Slyfile` in the current directory:
 $ sly --init
 ```
 
-Add functions to the `Slyfile`. They may contain any Bash code.
+Add functions to the `Slyfile`. They may contain any Bash code. Functions starting with an underscore (e.g. `_certs`) are considered "private" and won't be shown using `sly --list` to keep that tidy.
 
 ### Simple example
 

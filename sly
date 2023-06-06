@@ -41,7 +41,8 @@ sly_available_functions() {
   if sly_has_slyfile; then
     # shellcheck source=/dev/null
     source "$slyfile"
-    declare -F | awk '{print $NF}' | sort | grep -Ev "^sly_"
+    # Ignore functions starting with `sly_` or with an underscore
+    declare -F | awk '{print $NF}' | sort | grep -Ev "^(sly)?_"
   else
     sly_no_slyfile
   fi
